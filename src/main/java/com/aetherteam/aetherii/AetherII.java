@@ -5,6 +5,8 @@ import com.aetherteam.aetherii.client.AetherIIClient;
 import com.aetherteam.aetherii.data.AetherData;
 import com.aetherteam.aetherii.entity.AetherIIEntityTypes;
 import com.aetherteam.aetherii.item.AetherIIItems;
+import com.aetherteam.aetherii.world.foliageplacer.AetherIIFoliagePlacerTypes;
+import com.aetherteam.aetherii.world.trunkplacer.AetherIITrunkPlacerTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -26,7 +28,9 @@ public class AetherII {
         DeferredRegister<?>[] registers = {
                 AetherIIBlocks.BLOCKS,
                 AetherIIItems.ITEMS,
-                AetherIIEntityTypes.ENTITY_TYPES
+                AetherIIEntityTypes.ENTITY_TYPES,
+                AetherIIFoliagePlacerTypes.FOLIAGE_PLACERS,
+                AetherIITrunkPlacerTypes.TRUNK_PLACERS
         };
 
         for (DeferredRegister<?> register : registers) {
