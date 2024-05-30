@@ -34,10 +34,7 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
         // Chose a random direction on the x or z axis, this will be the main piece offset.
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         Direction opposite = direction.getOpposite();
-
-        this.placeLeavesRow(level, setter, random, config, , radius + attachment.radiusOffset() - 1, -1, false);
-        this.placeLeavesRow(level, setter, random, config, origin.relative(direction), radius + attachment.radiusOffset(), 0, true);
-
+        
         BlockPos relative = origin.relative(direction);
         int trueRad = radius + attachment.radiusOffset();
 
@@ -102,6 +99,11 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
     @Override
     public int foliageHeight(RandomSource random, int height, TreeConfiguration config) {
         return 0;
+    }
+
+    @Override
+    protected boolean shouldSkipLocation(RandomSource pRandom, int pLocalX, int pLocalY, int pLocalZ, int pRange, boolean pLarge) {
+        return false;
     }
 
     @Override
