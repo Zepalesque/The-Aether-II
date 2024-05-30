@@ -36,19 +36,22 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
         for (int x = -trueRad; x <= trueRad; x++) {
             for (int y = -1; y <= 0; y++) {
                 for (int z = -trueRad; z <= trueRad; z++) {
+                    int absX = Math.abs(x);
+                    int absZ = Math.abs(z);
                     if (y == -1) {
+
                         // Bottom half should be a randomized shape between a 5x5 diamond and a 3x3 square
-                        boolean insideDiamond = x + z <= trueRad;
-                        boolean outsideMainRadius = x >= trueRad || z >= trueRad;
-                        if (!insideDiamond || (outsideMainRadius && random.nextBoolean())) {
+                        boolean insideDiamond = absX + absZ <= trueRad;
+                        boolean outsideMainRadius = absX >= trueRad || absZ >= trueRad;
+                        if (!outsideMainRadius || insideDiamond && random.nextBoolean()) {
                             mutable.setWithOffset(relative, x, y, z);
                             tryPlaceLeaf(level, setter, random, config, mutable);
                         }
                     } else {
                         // Top half should be a 5x5 square with rounded corners
-                        boolean sidesX = x == -trueRad || x == trueRad;
-                        boolean sidesZ = z == -trueRad || z == trueRad;
-                        if (!sidesX && !sidesZ) {
+                        boolean sidesX = absX == trueRad;
+                        boolean sidesZ = absZ == trueRad;
+                        if (!sidesX || !sidesZ) {
                             mutable.setWithOffset(relative, x, y, z);
                             tryPlaceLeaf(level, setter, random, config, mutable);
                         }
