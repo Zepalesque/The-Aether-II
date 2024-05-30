@@ -1,6 +1,7 @@
 package com.aetherteam.aetherii.world.tree.foliage.wisproot;
 
 import com.aetherteam.aetherii.world.tree.foliage.AetherIIFoliagePlacer;
+import com.aetherteam.aetherii.world.tree.foliage.AetherIIFoliagePlacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -23,11 +24,6 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
 
     public WisprootFoliagePlacer(IntProvider radius, IntProvider offset) {
         super(radius, offset);
-    }
-
-    @Override
-    protected FoliagePlacerType<?> type() {
-        return null;
     }
 
     @Override
@@ -98,5 +94,8 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
         return shouldSkipLocation(rand, Mth.abs(x), Mth.abs(y), Mth.abs(z), range, large);
     }
 
-
+    @Override
+    protected FoliagePlacerType<?> type() {
+        return AetherIIFoliagePlacers.WISPROOT_FOLIAGE.get();
+    }
 }
