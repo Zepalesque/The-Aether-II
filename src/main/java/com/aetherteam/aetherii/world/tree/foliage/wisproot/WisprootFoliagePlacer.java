@@ -71,7 +71,7 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
     }
 
     @Override
-    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) {
+    public int foliageHeight(RandomSource random, int height, TreeConfiguration config) {
         return 0;
     }
 
