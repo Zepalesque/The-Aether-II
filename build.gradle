@@ -52,6 +52,13 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
+subsystems {
+    parchment {
+        minecraftVersion = "${mc_version}"
+        mappingsVersion = "${mappings}"
+    }
+}
+
 dependencies {
     implementation "net.neoforged:neoforge:${project.neoforge_version}"
 
