@@ -29,25 +29,54 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
     @Override
     protected void createFoliage(LevelSimulatedReader level, FoliageSetter setter, RandomSource random, TreeConfiguration config, int maxFreeHeight, FoliageAttachment attachment, int height, int radius, int offset) {
 
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         BlockPos origin = attachment.pos().above(offset);
         // Chose a random direction on the x or z axis, this will be the main piece offset.
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         Direction opposite = direction.getOpposite();
 
-        // Default radius should be 2
-        this.placeLeavesRow(level, setter, random, config, origin.relative(direction), radius + attachment.radiusOffset() - 1, -1, false);
+        this.placeLeavesRow(level, setter, random, config, , radius + attachment.radiusOffset() - 1, -1, false);
         this.placeLeavesRow(level, setter, random, config, origin.relative(direction), radius + attachment.radiusOffset(), 0, true);
+
+        BlockPos relative = origin.relative(direction);
+        int trueRad = radius + attachment.radiusOffset();
+
+        // Default radius should be 2
+        for (int x = -trueRad; x <= trueRad; x++) {
+            for (int y = -1; y <= 0; y++) {
+                for (int z = -trueRad; z <= trueRad; z++) {
+                    if (y == -1) {
+                        // Bottom half should be a randomized shape between a 5x5 diamond and a 3x3 square
+                        boolean insideDiamond = x + z <= trueRad;
+                        boolean outsideMainRadius = x >= trueRad || z >= trueRad;
+                        if (!insideDiamond || (outsideMainRadius && random.nextBoolean())) {
+                            mutable.setWithOffset(relative, x, y, z);
+                            tryPlaceLeaf(level, setter, random, config, mutable);
+                        }
+                    } else {
+                        // Top half should be a 5x5 square with rounded corners
+                        boolean sidesX = x == -trueRad || x == trueRad;
+                        boolean sidesZ = z == -trueRad || z == trueRad;
+                        if (!sidesX && !sidesZ) {
+                            mutable.setWithOffset(relative, x, y, z);
+                            tryPlaceLeaf(level, setter, random, config, mutable);
+                        }
+                    }
+                }
+            }
+        }
+
 
         // Place extra log and leaf to connect to the secondary piece
         BlockPos extraLogLoc = origin.relative(opposite);
         tryPlaceLog(level, setter, random, config, extraLogLoc, Direction.Axis.Y);
         tryPlaceLeaf(level, setter, random, config, extraLogLoc.below());
 
+
         Direction.Axis axis = direction.getAxis();
         Direction.Axis perpendicularAxis = axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
         BlockPos secondaryOrigin = random.nextBoolean() ? extraLogLoc : extraLogLoc.relative(Direction.fromAxisAndDirection(perpendicularAxis, Direction.AxisDirection.NEGATIVE));
 
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         // Place the secondary piece
         for (int x = -1; x <= 2; x++) {
             for (int y = 0; y <= 1; y++) {
@@ -73,25 +102,6 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
     @Override
     public int foliageHeight(RandomSource random, int height, TreeConfiguration config) {
         return 0;
-    }
-
-    @Override
-    protected boolean shouldSkipLocation(RandomSource rand, int x, int y, int z, int range, boolean large) {
-        // Only the lower half of the main piece should have parts that randomly are removed
-        // The maximum possible shape should be a 5x5 diamond, the minimum should be a 3x3 square
-        if (large) {
-            return false;
-        } else {
-            boolean outsideDiamondShape = x + z > range;
-            boolean outsideMainRadius = x >= range || z >= range;
-            return (outsideMainRadius && rand.nextBoolean()) || outsideDiamondShape;
-        }
-    }
-
-    @Override
-    protected boolean shouldSkipLocationSigned(RandomSource rand, int x, int y, int z, int range, boolean large) {
-        // Override the odd vanilla large/not-large behavior
-        return shouldSkipLocation(rand, Mth.abs(x), Mth.abs(y), Mth.abs(z), range, large);
     }
 
     @Override
