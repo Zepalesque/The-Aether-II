@@ -22,6 +22,7 @@ import com.aetherteam.aetherii.network.packet.serverbound.AerbunnyPuffPacket;
 import com.aetherteam.aetherii.world.AetherIIPoi;
 import com.aetherteam.aetherii.world.feature.AetherIIFeatures;
 import com.aetherteam.aetherii.world.structure.AetherIIStructureTypes;
+import com.aetherteam.aetherii.world.tree.foliage.AetherIIFoliagePlacers;
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -57,7 +58,8 @@ public class AetherII {
                 AetherIISoundEvents.SOUNDS,
                 AetherIIMenuTypes.MENU_TYPES,
                 AetherIIPoi.POI,
-                AetherIIDataAttachments.ATTACHMENTS
+                AetherIIDataAttachments.ATTACHMENTS,
+                AetherIIFoliagePlacers.FOLIAGE_PLACERS
         };
 
         for (DeferredRegister<?> register : registers) {
