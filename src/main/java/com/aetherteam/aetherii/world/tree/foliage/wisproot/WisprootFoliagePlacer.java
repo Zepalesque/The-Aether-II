@@ -6,16 +6,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
@@ -34,7 +28,7 @@ public class WisprootFoliagePlacer extends AetherIIFoliagePlacer {
         // Chose a random direction on the x or z axis, this will be the main piece offset.
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         Direction opposite = direction.getOpposite();
-        
+
         BlockPos relative = origin.relative(direction);
         int trueRad = radius + attachment.radiusOffset();
 
